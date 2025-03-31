@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebMFT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Lucide Icons via CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo">
+                <i data-lucide="terminal"></i>
+                <h1>WebMFT</h1>
+            </div>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                <i data-lucide="moon" id="moon-icon"></i>
+                <i data-lucide="sun" id="sun-icon" class="hidden"></i>
+            </button>
+        </header>
+
+        <div class="main-container">
+            <aside class="sidebar">
+                <h3>Navigation</h3>
+                <div class="nav-buttons">
+                    <button class="nav-button active" data-tab="process">
+                        <i data-lucide="file-up"></i>
+                        File Processing
+                    </button>
+                    <button class="nav-button" data-tab="mod">
+                        <i data-lucide="code"></i>
+                        Create a Mod
+                    </button>
+                    <button class="nav-button" data-tab="edit-mods">
+                        <i data-lucide="edit"></i>
+                        Edit Mods File
+                    </button>
+                    <button class="nav-button" data-tab="logs">
+                        <i data-lucide="logs"></i>
+                        Processing logs
+                    </button>
+                    <button class="nav-button" data-tab="documentation">
+                        <i data-lucide="book"></i>
+                        Documentation
+                    </button>
+                </div>
+            </aside>
+
+            <main>
+                <div class="tabs">
+                    <div class="tab-list">
+                        <button class="tab-trigger active" data-tab="process">File Processing</button>
+                        <button class="tab-trigger" data-tab="mod">Create a Mod</button>
+                        <button class="tab-trigger" data-tab="edit-mods">Edit Mods File</button>
+                        <button class="tab-trigger" data-tab="logs">Processing Logs</button>
+                        <button class="tab-trigger" data-tab="documentation">Documentation</button>
+                    </div>
+                    
+                    <!-- Tab: Process -->
+                    <div class="tab-content active" id="process-tab">
+                        <form id="file-form" class="form-container">
+                            <div class="form-group">
+                                <label for="file-input">Choose a file:</label>
+                                <input type="file" id="file-input" class="file-input">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="output-name">Output CSV file name:</label>
+                                <input type="text" id="output-name" placeholder="File name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="processing-mode">Processing Mode:</label>
+                                <div class="select-wrapper">
+                                    <select id="processing-mode">
+                                        <!-- Options will be added dynamically -->
+                                    </select>
+                                    <i data-lucide="chevron-down" class="select-icon"></i>
+                                </div>
+                            </div>                             
+                            
+                            <button type="submit" class="button primary-button" id="start-button">
+                                Start Processing
+                            </button>
+                        </form>
+
+                        <div id="results-container" class="hidden">
+                            <h3 class="section-title">
+                                <i data-lucide="bar-chart"></i>
+                                Processing Results
+                            </h3>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Source File</th>
+                                            <th>Output File</th>
+                                            <th>File Size</th>
+                                            <th>Mode</th>
+                                            <th>Preview</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="results-table-body">
+                                        <!-- Results will be added here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <!-- Tab: Mod -->
+                    <div class="tab-content" id="mod-tab">
+                        <form id="mod-form" class="form-container">
+                            <div class="form-group">
+                                <label for="mod-name">Mod Name:</label>
+                                <input type="text" id="mod-name" name="modName" placeholder="Mod Name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mod-description">Description:</label>
+                                <input type="text" id="mod-description" name="modDescription" placeholder="Description">
+                            </div>
+
+                            <div id="dynamic-exclusions-container">
+                                <h4>Exclusions</h4>
+
+                                <div id="exclusions-container">
+                                    <!-- Dynamic exclusions will be added here -->
+                                </div>
+
+                                <button type="button" id="add-exclusion" class="button secondary-button">Add Exclusion</button>
+                            </div>
+
+                            <button type="submit" class="button primary-button">
+                                Create Mod
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Tab: Edit Mods File -->
+                    <div class="tab-content" id="edit-mods-tab">
+                        <h3>Edit Mods JSON File</h3>
+                        <div id="editor-container" style="height: 400px; width: 100%;">
+                            <!-- Ace Editor will be initialized here -->
+                        </div>                        <br>
+                        <button type="button" id="save-mods-file" class="button primary-button">Save Changes</button>
+                    </div>
+
+                    <!-- Tab: Processing Logs -->
+                    <div class="tab-content" id="logs-tab">
+                        <h3>Processing Logs</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Source File</th>
+                                        <th>Output File</th>
+                                        <th>Preview</th>
+                                        <th>File Size</th>
+                                        <th>Mode</th>
+                                        <th>Timestamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="logs-table-body">
+                                    <!-- Logs will be added dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="documentation-tab">
+                        <h3>Filter Documentation</h3>
+                        <br>
+                        <section>
+                            <h4>Exclusion Filters</h4>
+                            <p>These filters allow you to exclude files based on specific properties:</p>
+                            <ul>
+                                <li><b>ExcludeColumnName</b> : Remove all lines of the column containing a specific value</li>
+                    <pre><code>
+                        "ExcludeExtension": [".log", ".tmp"]
+                    </code></pre>
+                    <pre><code>
+                        "ExcludeParentPath": ["regex:.*\\\\ProgramData\\\\.*", ".\\System Volume Information"]
+                    </code></pre>
+                    <pre><code>
+                        "ExcludeIsDirectory": ["True"]
+                    </code></pre>
+                            </ul>
+                        </section>
+                        <br>
+                        <section>
+                            <h4>Value-Based Filters</h4>
+                            <p>These filters allow you to keep only files that match specific numerical conditions:</p>
+                            <ul>
+                                <li><b>MinimumColumnName</b>: Keeps files with a value greater than or equal to the specified value.</li>
+                                <pre><code>
+                        "MinimumSize": 100
+                    </code></pre>
+                    
+                                <li><b>MaximumColumnName</b>: Keeps files with a value less than or equal to the specified value.</li>
+                                <pre><code>
+                        "MaximumSize": 5000
+                    </code></pre>
+                    
+                                <li><b>EqualColumnName</b>: Keeps only files that have an exact value.</li>
+                                <pre><code>
+                        "EqualType": ["File"]
+                    </code></pre>
+                            </ul>
+                        </section>
+                        <br>
+                        <section>
+                            <h4>Date Filters</h4>
+                            <p>These filters allow you to filter files based on their date:</p>
+                            <ul>
+                                <li><b>BeforeColumnName</b>: Keeps files before the specified date.</li>
+                                <pre><code>
+                        "BeforeLastModified": "2023-12-31 23:59:59.999999"
+                    </code></pre>
+                    
+                                <li><b>AfterColumnName</b>: Keeps files after the specified date.</li>
+                                <pre><code>
+                        "AfterCreationDate": "2024-01-01 00:00:00.000000"
+                    </code></pre>
+                    
+                                <li><b>OnDateColumnName</b>: Keeps only files with the exact specified date.</li>
+                                <pre><code>
+                        "OnDateScanDate": "2024-09-12 08:27:26.419498"
+                    </code></pre>
+                            </ul>
+                            <p><b>⚠ Date format must be:</b> <code>YYYY-MM-DD HH:MM:SS.ffffff</code></p>
+                        </section>
+                    </div>
+
+                </div>
+
+                <!-- Terminal Output -->
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <i data-lucide="logs"></i>
+                        <span>Logs</span>
+                    </div>
+                    <div id="terminal-output" class="terminal-content">
+                        <div class="terminal-placeholder">Waiting for logs...</div>
+                    </div>
+                </div>
+                
+            </main>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 WebMFT - All rights reserved</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

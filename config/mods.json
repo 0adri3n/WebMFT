@@ -1,0 +1,25 @@
+{
+    "Sample Mod 2": {
+        "Description": "A second basic sample mod for WebMFT",
+        "ExcludeParentPath": [
+            ".\\System Volume Information"
+        ]
+    },
+    "Sample mod": {
+        "Description": "Basic sample mod for WebMFT",
+        "ExcludeExtension": [
+            ".log"
+        ],
+        "ExcludeIsDirectory": [
+            "True"
+        ],
+        "ExcludeParentPath": [
+            "regex:.*\\\\ProgramData\\\\.*",
+            ".\\System Volume Information"
+        ],
+        "MinimumEntryNumber": 4,
+        "MaximumEntryNumber": 11,
+        "EqualFileName": ["$Bitmap", "$Boot"],
+        "AfterCreated0x10": "2024-09-12 00:00:00.000000"
+    }
+}
