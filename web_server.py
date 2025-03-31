@@ -16,7 +16,7 @@ DATE_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
 
-# Vérifier si les dossiers existent, sinon les créer
+
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
@@ -38,24 +38,24 @@ def filter_csv(input_csv, output_csv, processing_mode):
 
     df = pd.read_csv(input_csv, sep=',')
 
-    # Appliquer les filtres en fonction des colonnes spécifiées
+    
     for key, exclusions in mods[processing_mode].items():
         if key.startswith("Exclude") and isinstance(exclusions, list):
-            column_name = key.replace("Exclude", "")  # Trouver la colonne associée (Ex: "Path" pour "ExcludePath")
-            column_name = column_name[0].upper() + column_name[1:]  # Mettre la première lettre en majuscule
+            column_name = key.replace("Exclude", "")  
+            column_name = column_name[0].upper() + column_name[1:]  
 
             if column_name in df.columns:
                 for exclusion in exclusions:
                     if exclusion.startswith("regex:"):
-                        # Appliquer la regex si le préfixe "regex:" est trouvé
-                        pattern = exclusion[6:]  # Retirer "regex:" du début
+                        
+                        pattern = exclusion[6:]  
                         df = df[~df[column_name].astype(str).str.contains(pattern, regex=True)]
                     else:
-                        # Sinon, appliquer le filtrage standard
+                        
                         df = df[~df[column_name].astype(str).isin([exclusion])]
 
 
-        # Appliquer les filtres Minimum, Maximum et Equal
+        
         if key.startswith("Minimum") and isinstance(exclusions, (int, float)):
             column_name = key.replace("Minimum", "")
             column_name = column_name[0].upper() + column_name[1:]
@@ -116,16 +116,16 @@ def process_file():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         output_csv = os.path.join(app.config['OUTPUT_FOLDER'], output_name)
 
-        file.save(file_path)  # Sauvegarde du fichier
+        file.save(file_path)  
 
-        # Exécuter MFTECmd
+        
         command = ["MFTECmd.exe", "-f", file_path, "--csv", "output", "--csvf", output_name]
         result = subprocess.run(command, capture_output=True, text=True)
 
         if result.returncode != 0:
             return jsonify({'error': 'Erreur lors du traitement', 'details': result.stderr}), 500
 
-        # Appliquer le filtrage
+        
         filter_csv(output_csv, output_csv, processing_mode)
 
         save_log(file.filename, output_name, os.path.getsize(output_csv), processing_mode)
@@ -140,34 +140,34 @@ def process_file():
 def add_mod():
     mod_data = request.get_json()
 
-    # Charger le fichier JSON actuel
+    
     with open('config/mods.json', 'r') as f:
         mods = json.load(f)
 
-    # Préparer la structure du mod à ajouter
+    
     new_mod = {
         "Description": mod_data['description'],
     }
 
-    # Ajouter les exclusions à partir des données envoyées par l'utilisateur
+    
     for exclusion in mod_data['exclusions']:
         column_name = exclusion['columnName']
         exclude_value = exclusion['excludeValue']
         
-        # Si la clé correspond à un champ d'exclusion, ajouter l'exclusion
+        
         exclusion_key = f"Exclude{column_name.capitalize()}"
         
-        # Si la clé n'existe pas dans le mod, on initialise une liste
+        
         if exclusion_key not in new_mod:
             new_mod[exclusion_key] = []
 
-        # Ajouter l'exclusion, en tenant compte du format (ex : regex)
+        
         new_mod[exclusion_key].append(exclude_value)
 
-    # Ajouter le nouveau mod au dictionnaire
+    
     mods[mod_data['modName']] = new_mod
 
-    # Sauvegarder le fichier JSON mis à jour
+    
     with open('config/mods.json', 'w') as f:
         json.dump(mods, f, indent=4)
 
@@ -182,14 +182,14 @@ def get_mods():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Route pour sauvegarder les modifications dans mods.json
+
 @app.route('/save-mods', methods=['POST'])
 def save_mods():
     try:
         mods_data = request.get_json()
-        mods = mods_data['modsData']  # Convertir la chaîne JSON en dictionnaire
+        mods = mods_data['modsData']  
 
-        # Sauvegarder dans le fichier mods.json
+        
         with open('config/mods.json', 'w') as f:
             json.dump(mods, f, indent=4)
 
@@ -218,7 +218,7 @@ def save_log(source_file, output_file, file_size, mode):
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
 
-    # Charger les logs existants (si le fichier existe)
+    
     if os.path.exists(LOG_FILE):
         with open(LOG_FILE, "r") as f:
             try:
@@ -230,10 +230,10 @@ def save_log(source_file, output_file, file_size, mode):
     else:
         logs = []
 
-    # Ajouter le nouveau log
+    
     logs.append(log_entry)
 
-    # Écrire les logs mis à jour
+    
     with open(LOG_FILE, "w") as f:
         json.dump(logs, f, indent=4)
 

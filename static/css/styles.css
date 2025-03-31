@@ -1,4 +1,4 @@
-/* Variables et thèmes */
+
 :root {
   --background: #ffffff;
   --foreground: #0f172a;
@@ -57,7 +57,7 @@
   --footer-text: #ffffff;
 }
 
-/* Reset et base */
+
 * {
   margin: 0;
   padding: 0;
@@ -78,7 +78,7 @@ body {
   min-height: 100vh;
 }
 
-/* Header */
+
 header {
   background-color: var(--header-bg);
   color: var(--header-text);
@@ -112,13 +112,13 @@ header {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Main container */
+
 .main-container {
   display: flex;
   flex: 1;
 }
 
-/* Sidebar */
+
 .sidebar {
   width: 200px;
   background-color: var(--sidebar-bg);
@@ -163,7 +163,7 @@ header {
   color: var(--primary-foreground);
 }
 
-/* Main content */
+
 main {
   flex: 1;
   padding: 1rem;
@@ -172,7 +172,7 @@ main {
   gap: 1rem;
 }
 
-/* Tabs */
+
 .tabs {
   display: flex;
   flex-direction: column;
@@ -212,7 +212,7 @@ main {
   display: block;
 }
 
-/* Forms */
+
 .form-container {
   display: flex;
   flex-direction: column;
@@ -288,7 +288,7 @@ input[type="file"] {
   opacity: 0.9;
 }
 
-/* Table */
+
 .section-title {
   display: flex;
   align-items: center;
@@ -325,7 +325,7 @@ tr:last-child td {
   border-bottom: none;
 }
 
-/* Terminal */
+
 .terminal {
   margin-top: auto;
   background-color: var(--terminal-bg);
@@ -368,7 +368,7 @@ tr:last-child td {
   color: var(--terminal-success);
 }
 
-/* Footer */
+
 footer {
   background-color: var(--footer-bg);
   color: var(--footer-text);
@@ -378,12 +378,12 @@ footer {
   border-top: 1px solid var(--border);
 }
 
-/* Utilities */
+
 .hidden {
   display: none !important;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .main-container {
     flex-direction: column;

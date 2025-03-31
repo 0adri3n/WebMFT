@@ -149,31 +149,31 @@ document.getElementById('add-exclusion').addEventListener('click', function() {
   const exclusionDiv = document.createElement('div');
   exclusionDiv.classList.add('exclusion-group');
 
-  // Column Name Input
+  
   const columnNameLabel = document.createElement('label');
   columnNameLabel.textContent = 'Column Name:';
   const columnNameInput = document.createElement('input');
   columnNameInput.type = 'text';
   columnNameInput.placeholder = 'Enter Column Name (e.g., ParentPath)';
 
-  // Exclude Value Input
+  
   const valueLabel = document.createElement('label');
   valueLabel.textContent = 'Value to Exclude:';
   const valueInput = document.createElement('input');
   valueInput.type = 'text';
   valueInput.placeholder = 'Enter Exclude Value (e.g., regex:.*\\\\ProgramData\\\\.*)';
 
-  // Add to exclusion div
+  
   exclusionDiv.appendChild(columnNameLabel);
   exclusionDiv.appendChild(columnNameInput);
   exclusionDiv.appendChild(valueLabel);
   exclusionDiv.appendChild(valueInput);
 
-  // Add exclusion group to the container
+  
   document.getElementById('exclusions-container').appendChild(exclusionDiv);
 });
 
-// Capture the form submission and send data to server
+
 document.getElementById('mod-form').addEventListener('submit', function(e) {
   e.preventDefault();
 
@@ -187,7 +187,7 @@ document.getElementById('mod-form').addEventListener('submit', function(e) {
   addTerminalLine(`Creating mod: ${document.getElementById('mod-name').value}`);
   addTerminalLine("Compiling mod...");
 
-  // Collect all exclusion pairs
+  
   const exclusionGroups = document.querySelectorAll('.exclusion-group');
   exclusionGroups.forEach(group => {
       const columnName = group.querySelector('input[type="text"]').value.trim();
@@ -199,7 +199,7 @@ document.getElementById('mod-form').addEventListener('submit', function(e) {
   });
 
 
-  // Send modData to the server for adding to the JSON
+  
   fetch('/add-mod', {
       method: 'POST',
       headers: {
@@ -209,7 +209,7 @@ document.getElementById('mod-form').addEventListener('submit', function(e) {
   })
   .then(response => response.json())
   .then(data => {
-      // Handle response from server (e.g., success message)
+      
       addTerminalLine("Mod created successfully!", "success");
   })
   .catch(error => {
@@ -218,22 +218,22 @@ document.getElementById('mod-form').addEventListener('submit', function(e) {
 });
 
 
-// Initialize Ace Editor
+
 var editor = ace.edit("editor-container");
 editor.setTheme("ace/theme/monokai");
 editor.getSession().setMode("ace/mode/json");
 
-// Load the current mods.json content (you'll need to load this dynamically from your backend)
+
 fetch('/get-mods')
     .then(response => response.json())
     .then(data => {
-        editor.setValue(JSON.stringify(data, null, 4)); // Format the JSON with indentation
+        editor.setValue(JSON.stringify(data, null, 4)); 
     });
 
-// Save changes when the user clicks the "Save Changes" button
+
 document.getElementById("save-mods-file").addEventListener("click", function() {
     var jsonContent = editor.getValue();
-    // Send the updated JSON to the server to save it
+    
     fetch('/save-mods', {
         method: 'POST',
         headers: {
@@ -250,7 +250,7 @@ document.getElementById("save-mods-file").addEventListener("click", function() {
     });
 });
 
-// Fonction pour récupérer et afficher les logs
+
 async function fetchLogs() {
   try {
       const response = await fetch('/get-logs');
@@ -275,7 +275,7 @@ async function fetchLogs() {
   }
 }
 
-// Charger les logs quand l'onglet est affiché
+
 document.querySelector('[data-tab="logs"]').addEventListener('click', fetchLogs);
 
 async function loadProcessingModes() {
@@ -289,9 +289,9 @@ async function loadProcessingModes() {
       }
 
       const selectElement = document.getElementById('processing-mode');
-      selectElement.innerHTML = ''; // Nettoyer les options existantes
+      selectElement.innerHTML = ''; 
 
-      // Les clés de l'objet JSON sont les noms des mods
+      
       const modNames = Object.keys(data);
 
       if (modNames.length > 0) {
