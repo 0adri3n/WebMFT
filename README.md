@@ -1,16 +1,19 @@
 # **WebMFT**  
 
-<img src="https://github.com/0adri3n/bpp/blob/master/src/img/logo.PNG?raw=true" width=450></img>  
+![image](https://github.com/user-attachments/assets/fd307217-4630-4c6c-9955-be67d865ca90)
 
 ## 📸 **Screenshots**  
 
-*(Ajoute ici des captures d'écran de ton projet pour illustrer son fonctionnement.)*  
+![image](https://github.com/user-attachments/assets/241f4a31-7423-445f-856e-64c550be7341)
+
+![image](https://github.com/user-attachments/assets/a88aa5ea-166d-4a09-98ea-6cfb60527e4a)
+
 
 ---
 
 ## 🚀 **Overview**  
 
-**WebMFT** is a powerful tool designed to process **Master File Table (MFT) files** efficiently. This project leverages **MFTECmd.exe** by **John Zimmerman** to extract and filter MFT records, offering users a clean web interface to manipulate and analyze the data.  
+**WebMFT** is a powerful tool designed to process **Master File Table (MFT) files** efficiently. This project leverages <a href="https://github.com/EricZimmerman/MFTECmd" target="_blank">**MFTECmd.exe**</a> by **Eric Zimmerman** to extract MFT records, offering users a clean web interface to manipulate and analyze the data.  
 
 With **WebMFT**, you can:  
 
@@ -24,12 +27,6 @@ With **WebMFT**, you can:
 ## 🎯 **Goal**  
 
 The objective of **WebMFT** is to provide an easy-to-use **web interface** for forensic analysis of MFT records, allowing investigators, analysts, and cybersecurity professionals to process and filter large datasets with ease.  
-
----
-
-## 🔗 **Live Demo**  
-
-👉 *(If you have a hosted version, provide a link here! Otherwise, mention how to run it locally.)*  
 
 ---
 
@@ -94,7 +91,7 @@ Used to filter records based on timestamps.
 1️⃣ **Clone the repository**  
 
 ```sh
-git clone https://github.com/YOUR_USERNAME/WebMFT.git
+git clone https://github.com/0adri3n/WebMFT.git
 cd WebMFT
 ```
 
@@ -107,7 +104,7 @@ pip install -r requirements.txt
 3️⃣ **Run the project**  
 
 ```sh
-python app.py
+python web_server.py
 ```
 
 4️⃣ **Open the web interface** in your browser at:  
@@ -120,12 +117,12 @@ http://127.0.0.1:5000
 
 ## ⚡ **How Does It Work?**  
 
-WebMFT uses **MFTECmd.exe** from John Zimmerman to process MFT files. The tool extracts relevant file system metadata, which is then filtered and displayed using the WebMFT interface.  
+WebMFT uses **MFTECmd.exe** from Eric Zimmerman to process MFT files. The tool extracts relevant file system metadata, which is then filtered and displayed using the WebMFT interface.  
 
 When you upload an MFT file:  
-1. **MFTECmd.exe processes the file** and extracts its records.  
+1. **MFTECmd.exe processes the file** and extracts its records into a CSV file.  
 2. **WebMFT applies the selected filters** (size, date, extension, etc.).  
-3. **A CSV file is generated**, containing the refined data.  
+3. **A new CSV file is generated**, containing the refined data.  
 
 ---
 
